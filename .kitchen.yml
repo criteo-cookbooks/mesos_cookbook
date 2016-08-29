@@ -12,7 +12,7 @@ provisioner:
   require_chef_omnibus: 12.5.1
 
 platforms:
-  - name: ubuntu-15.04
+  - name: ubuntu-15.10
     run_list:
       - recipe[apt]
       - recipe[curl]
@@ -42,7 +42,9 @@ platforms:
 
 suites:
 - &default
-  name: 0-28-0
+  name: 1-0-0
+  excludes:
+    - box-cutter/ol72
   attributes:
     mesos:
       slave:
@@ -52,12 +54,16 @@ suites:
     - recipe[mesos::master]
     - recipe[mesos::slave]
 - <<: *default
+  name: 0-28-2
+  excludes:
+    - ubuntu-16.04
+  attributes:
+    mesos:
+      version: 0.28.2
+- <<: *default
   name: 0-27-2
+  excludes:
+    - ubuntu-16.04
   attributes:
     mesos:
       version: 0.27.2
-- <<: *default
-  name: 0-26-0
-  attributes:
-    mesos:
-      version: 0.26.0
