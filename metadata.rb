@@ -17,6 +17,6 @@ end
   depends cb
 end
 
-depends 'yum', '~> 3.0'
+depends 'yum'
 
 suggests 'exhibitor', '0.4.0'
