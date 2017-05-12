@@ -52,13 +52,7 @@ when 'rhel'
   end
 
   yum_package 'mesos' do
-    version lazy {
-      # get the version-release string directly from the Yum provider rpmdb
-      Chef::Provider::Package::Yum::YumCache
-        .instance.instance_variable_get('@rpmdb').lookup('mesos')
-        .find { |pkg| pkg.version.v == node['mesos']['version'] }
-        .version.to_s
-    }
+    version node['mesos']['version']
   end
 end
 
