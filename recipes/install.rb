@@ -53,6 +53,7 @@ when 'rhel'
 
   yum_package 'mesos' do
     version node['mesos']['version']
+    options node['mesos']['package_options']
   end
 end
 

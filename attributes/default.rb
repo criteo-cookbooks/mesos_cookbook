@@ -7,7 +7,12 @@ default['mesos']['repo']       = true
 # Mesosphere Mesos version.
 default['mesos']['version']    = '1.1.0'
 
-default['mesos']['package_options'] = ['--no-install-recommends']
+default['mesos']['package_options'] = case node['platform_family']
+                                      when 'debian'
+                                        ['--no-install-recommends']
+                                      when 'rhel'
+                                        []
+                                      end
 
 # Init system to use
 default['mesos']['init']       = case node['platform']
