@@ -40,7 +40,7 @@ when 'debian'
   package 'mesos' do
     action :install
     # --no-install-recommends to skip installing zk. unnecessary.
-    options node['mesos']['package_options']
+    options node['mesos']['package_options'].join(' ')
     # Glob is necessary to select the deb version string
     version "#{node['mesos']['version']}*"
   end
@@ -53,6 +53,7 @@ when 'rhel'
 
   yum_package 'mesos' do
     version node['mesos']['version']
+    options node['mesos']['package_options'].join(' ')
   end
 end
 
