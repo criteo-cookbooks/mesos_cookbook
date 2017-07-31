@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Cookbook Name:: mesos
 # Recipe:: slave
@@ -78,5 +80,5 @@ service 'mesos-slave' do
   supports status: true, restart: true
   subscribes :restart, 'template[mesos-slave-init]'
   subscribes :restart, 'template[mesos-slave-wrapper]'
-  action [:enable, :start]
+  action %i[enable start]
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'rubocop/rake_task'
 require 'foodcritic'
@@ -35,6 +37,6 @@ end
 RSpec::Core::RakeTask.new(:spec)
 
 desc 'Run all tests on Travis'
-task travis: %w(style)
+task travis: %w[style]
 
-task default: %w(style integration:vagrant)
+task default: %w[style integration:vagrant]

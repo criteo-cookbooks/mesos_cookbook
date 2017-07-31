@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Cookbook Name:: mesos
 # Recipe:: install
@@ -31,7 +33,7 @@ include_recipe 'mesos::repo' if node['mesos']['repo']
 
 case node['platform_family']
 when 'debian'
-  %w(unzip default-jre-headless libcurl3 libsvn1).each do |pkg|
+  %w[unzip default-jre-headless libcurl3 libsvn1].each do |pkg|
     package pkg do
       action :install
     end
@@ -45,7 +47,7 @@ when 'debian'
     version "#{node['mesos']['version']}*"
   end
 when 'rhel'
-  %w(unzip libcurl subversion).each do |pkg|
+  %w[unzip libcurl subversion].each do |pkg|
     yum_package pkg do
       action :install
     end
@@ -118,7 +120,7 @@ service 'mesos-master-default' do
   when 'upstart'
     provider Chef::Provider::Service::Upstart
   end
-  action [:stop, :disable]
+  action %i[stop disable]
   not_if { node['recipes'].include?('mesos::master') }
 end
 
@@ -132,6 +134,6 @@ service 'mesos-slave-default' do
   when 'upstart'
     provider Chef::Provider::Service::Upstart
   end
-  action [:stop, :disable]
+  action %i[stop disable]
   not_if { node['recipes'].include?('mesos::slave') }
 end
