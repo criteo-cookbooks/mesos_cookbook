@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Cookbook Name:: mesos
 # Recipe:: master
@@ -78,5 +80,5 @@ service 'mesos-master' do
   supports status: true, restart: true
   subscribes :restart, 'template[mesos-master-init]'
   subscribes :restart, 'template[mesos-master-wrapper]'
-  action [:enable, :start]
+  action %i[enable start]
 end

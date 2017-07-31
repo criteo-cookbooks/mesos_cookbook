@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name             'mesos'
 maintainer       'Ray Rodriguez'
 maintainer_email 'rayrod2030@gmail.com'
@@ -8,11 +10,11 @@ version          '3.6.0'
 source_url       'https://github.com/mdsol/mesos_cookbook'
 issues_url       'https://github.com/mdsol/mesos_cookbook/issues'
 
-%w(ubuntu debian centos amazon scientific oracle).each do |os|
+%w[ubuntu debian centos amazon scientific oracle].each do |os|
   supports os
 end
 
-%w(java apt yum).each do |cookbook|
+%w[java apt yum].each do |cookbook|
   depends cookbook
 end
 chef_version '>= 11' if respond_to?(:chef_version)

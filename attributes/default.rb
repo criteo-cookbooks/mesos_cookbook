@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Default Java version
 default['java']['jdk_version'] = '8'
 
@@ -15,15 +17,15 @@ default['mesos']['package_options'] = case node['platform_family']
                                       end
 
 # Init system to use
-default['mesos']['init']       = case node['platform']
-                                 when 'debian'
-                                   node['platform_version'].to_i >= 8 ? 'systemd' : 'sysvinit_debian'
-                                 when 'ubuntu'
-                                   node['platform_version'].to_f >= 15.04 ? 'systemd' : 'upstart'
-                                 when 'redhat', 'centos', 'scientific', 'oracle' # ~FC024
-                                   node['platform_version'].to_i >= 7 ? 'systemd' : 'upstart'
-                                 else 'upstart'
-                                 end
+default['mesos']['init'] = case node['platform']
+                           when 'debian'
+                             node['platform_version'].to_i >= 8 ? 'systemd' : 'sysvinit_debian'
+                           when 'ubuntu'
+                             node['platform_version'].to_f >= 15.04 ? 'systemd' : 'upstart'
+                           when 'redhat', 'centos', 'scientific', 'oracle' # ~FC024
+                             node['platform_version'].to_i >= 7 ? 'systemd' : 'upstart'
+                           else 'upstart'
+                           end
 
 #
 # Mesos MASTER configuration
