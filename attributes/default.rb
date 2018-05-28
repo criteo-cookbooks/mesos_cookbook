@@ -5,6 +5,8 @@ default['java']['jdk_version'] = '8'
 default['mesos']['repo']       = true
 
 # Mesosphere Mesos version.
+# overriding this attribute to nil in a wrapper cookbook will force the
+# cookbook to use the latest version available in the repositories
 default['mesos']['version']    = '1.1.0'
 
 # Init system to use
