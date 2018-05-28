@@ -40,11 +40,15 @@ when 'debian'
   end
 
   package 'mesos' do
-    action :install
     # --no-install-recommends to skip installing zk. unnecessary.
     options node['mesos']['package_options'].join(' ')
-    # Glob is necessary to select the deb version string
-    version "#{node['mesos']['version']}*"
+    if node['mesos']['version']
+      action :install
+      # Glob is necessary to select the deb version string
+      version "#{node['mesos']['version']}*"
+    else
+      action :upgrade
+    end
   end
 when 'rhel'
   %w[unzip libcurl subversion].each do |pkg|
@@ -54,7 +58,11 @@ when 'rhel'
   end
 
   yum_package 'mesos' do
-    version node['mesos']['version']
+    if node['mesos']['version']
+      version node['mesos']['version']
+    else
+      action :upgrade
+    end
     options node['mesos']['package_options'].join(' ')
   end
 end
