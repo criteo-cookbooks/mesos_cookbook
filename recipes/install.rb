@@ -61,7 +61,7 @@ when 'rhel'
     if node['mesos']['version']
       version node['mesos']['version']
     else
-      action :upgrade
+      action :upgrade
     end
     allow_downgrade true
     options node['mesos']['package_options'].join(' ')
