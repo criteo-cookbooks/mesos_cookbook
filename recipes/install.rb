@@ -63,6 +63,7 @@ when 'rhel'
     else
       action :upgrade
     end
+    allow_downgrade true
     options node['mesos']['package_options'].join(' ')
   end
 end
