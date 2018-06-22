@@ -4,6 +4,9 @@ After=network.target
 Wants=network.target
 
 [Service]
+<% @env.each do |k,v| %>
+Environment="<%= k %>=<%= v %>"
+<% end %>
 ExecStart=<%= @wrapper %>
 Restart=on-failure
 RestartSec=20

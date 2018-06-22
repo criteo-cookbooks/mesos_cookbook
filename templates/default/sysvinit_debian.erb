@@ -17,6 +17,9 @@ DESC="<%= @name %>"
 
 PID=/var/run/<%= @name %>.pid
 
+# environmental variables
+<%= @env.map{|k,v| "export #{k}=\"#{v}\""}.join("\n") %>
+
 start() {
   start-stop-daemon --start --background --quiet \
                     --pidfile "$PID" --make-pidfile \

@@ -89,7 +89,8 @@ template 'mesos-master-init' do
     source 'upstart.erb'
   end
   variables(name:    'mesos-master',
-            wrapper: '/etc/mesos-chef/mesos-master')
+            wrapper: '/etc/mesos-chef/mesos-master',
+            env: node['mesos']['master']['env'])
 end
 
 template 'mesos-slave-init' do
@@ -106,7 +107,8 @@ template 'mesos-slave-init' do
     source 'upstart.erb'
   end
   variables(name:    'mesos-slave',
-            wrapper: '/etc/mesos-chef/mesos-slave')
+            wrapper: '/etc/mesos-chef/mesos-slave',
+            env: node['mesos']['slave']['env'])
 end
 
 # Reload systemd on template change
