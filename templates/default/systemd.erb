@@ -11,6 +11,7 @@ ExecStart=<%= @wrapper %>
 Restart=on-failure
 RestartSec=20
 LimitNOFILE=16384
+Delegate=true
 
 [Install]
 WantedBy=multi-user.target
