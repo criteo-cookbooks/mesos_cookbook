@@ -116,6 +116,7 @@ execute 'systemctl-daemon-reload' do
   command '/bin/systemctl --system daemon-reload'
   subscribes :run, 'template[mesos-master-init]'
   subscribes :run, 'template[mesos-slave-init]'
+  notifies :restart, 'service[mesos-slave]', :immediately
   action :nothing
   only_if { node['mesos']['init'] == 'systemd' }
 end
