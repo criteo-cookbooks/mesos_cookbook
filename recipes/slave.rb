@@ -66,6 +66,12 @@ template 'mesos-slave-wrapper' do
             syslog: node['mesos']['slave']['syslog'])
 end
 
+execute 'systemd-daemon-reload' do
+  action :nothing
+  command 'systemctl daemon-reload'
+  subscribes :run, 'template[mesos-slave-init]'
+end
+
 # Mesos master service definition
 service 'mesos-slave' do
   case node['mesos']['init']
