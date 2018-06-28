@@ -1,9 +1,0 @@
-description "Upstart job for <%= @name %>"
-
-start on stopped rc RUNLEVEL=[2345]
-respawn
-
-# environmental variables
-<%= @env.map{|k,v| "export #{k}=\"#{v}\""}.join("\n") %>
-
-exec <%= @wrapper %>

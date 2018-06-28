@@ -18,13 +18,8 @@ Platform
 --------
 Tested on
 
-* Ubuntu 16.04
-* Ubuntu 15.10
-* Ubuntu 14.04
-* Ubuntu 12.04
 * Debian 8.6 (with Java 7)
 * CentOS 7.2
-* CentOS 6.8
 
 Supported Mesos versions
 ------------------------
@@ -95,6 +90,7 @@ The following cookbooks are dependencies:
 * [apt][]
 * [yum][]
 * [java][]
+* [systemd][]
 
 The following cookbooks are suggested:
 

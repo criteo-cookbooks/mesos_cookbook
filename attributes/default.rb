@@ -18,17 +18,6 @@ default['mesos']['package_options'] = case node['platform_family']
                                         []
                                       end
 
-# Init system to use
-default['mesos']['init'] = case node['platform']
-                           when 'debian'
-                             node['platform_version'].to_i >= 8 ? 'systemd' : 'sysvinit_debian'
-                           when 'ubuntu'
-                             node['platform_version'].to_f >= 15.04 ? 'systemd' : 'upstart'
-                           when 'redhat', 'centos', 'scientific', 'oracle' # ~FC024
-                             node['platform_version'].to_i >= 7 ? 'systemd' : 'upstart'
-                           else 'upstart'
-                           end
-
 #
 # Mesos MASTER configuration
 #
@@ -75,11 +64,7 @@ default['mesos']['slave']['flags']['strict']        = true
 default['mesos']['slave']['flags']['recover']       = 'reconnect'
 
 # Workaround for setting default cgroups hierarchy root
-default['mesos']['slave']['flags']['cgroups_hierarchy'] = if node['mesos']['init'] == 'systemd'
-                                                            '/sys/fs/cgroup'
-                                                          else
-                                                            '/cgroup'
-                                                          end
+default['mesos']['slave']['flags']['cgroups_hierarchy'] = '/sys/fs/cgroup'
 
 # Use the following options if you are using Exhibitor to manage Zookeeper
 # in your environment.

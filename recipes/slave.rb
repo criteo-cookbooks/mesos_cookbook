@@ -64,45 +64,34 @@ template 'mesos-slave-wrapper' do
   variables(bin:    node['mesos']['slave']['bin'],
             flags:  node['mesos']['slave']['flags'],
             syslog: node['mesos']['slave']['syslog'])
+  notifies :restart, 'service[mesos-slave]'
 end
 
 
-if node['mesos']['init'] == 'systemd'
-  systemd_service 'mesos-slave' do
-    unit do
-      description 'Mesos mesos-slave'
-      after 'network.target'
-      wants 'network.target'
-    end
-
-    service do
-      environment ['mesos']['slave']['env']
-      exec_start '/etc/mesos-chef/mesos-slave'
-      restart 'on-failure'
-      restart_sec 20
-      limit_nofile 16384
-      delegate true
-    end
-
-    install do
-      wanted_by 'multi-user.target'
-    end
-    action [:create, :enable]
-    notifies :restart, 'service[mesos-slave]'
+systemd_service 'mesos-slave' do
+  unit do
+    description 'Mesos mesos-slave'
+    after 'network.target'
+    wants 'network.target'
   end
+
+  service do
+    environment ['mesos']['slave']['env']
+    exec_start '/etc/mesos-chef/mesos-slave'
+    restart 'on-failure'
+    restart_sec 20
+    limit_nofile 16384
+    delegate true
+  end
+
+  install do
+    wanted_by 'multi-user.target'
+  end
+  action [:create, :enable]
+  notifies :restart, 'service[mesos-slave]'
 end
 
 service 'mesos-slave' do
-  case node['mesos']['init']
-  when 'systemd'
-    provider Chef::Provider::Service::Systemd
-  when 'sysvinit_debian'
-    provider Chef::Provider::Service::Init::Debian
-  when 'upstart'
-    provider Chef::Provider::Service::Upstart
-  end
   supports status: true, restart: true
-  subscribes :restart, 'template[mesos-slave-init]' unless node['mesos']['init'] == 'systemd'
-  subscribes :restart, 'template[mesos-slave-wrapper]'
   action %i[enable start]
 end

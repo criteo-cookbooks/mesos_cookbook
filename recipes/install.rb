@@ -21,15 +21,7 @@
 
 include_recipe 'java'
 
-#
-# Install default repos
-#
-
 include_recipe 'mesos::repo' if node['mesos']['repo']
-
-#
-# Install package
-#
 
 case node['platform_family']
 when 'debian'
@@ -68,69 +60,13 @@ when 'rhel'
   end
 end
 
-#
-# Support for multiple init systems
-#
-
 directory '/etc/mesos-chef'
 
-unless node['mesos']['init'] == 'systemd'
-  template 'mesos-master-init' do
-    case node['mesos']['init']
-    when 'sysvinit_debian'
-      mode 0o755
-      path '/etc/init.d/mesos-master'
-      source 'sysvinit_debian.erb'
-    when 'upstart'
-      path '/etc/init/mesos-master.conf'
-      source 'upstart.erb'
-    end
-    variables(name:    'mesos-master',
-              wrapper: '/etc/mesos-chef/mesos-master',
-              env: node['mesos']['master']['env'])
-  end
-
-  template 'mesos-slave-init' do
-    case node['mesos']['init']
-    when 'sysvinit_debian'
-      mode 0o755
-      path '/etc/init.d/mesos-slave'
-      source 'sysvinit_debian.erb'
-    when 'upstart'
-      path '/etc/init/mesos-slave.conf'
-      source 'upstart.erb'
-    end
-    variables(name:    'mesos-slave',
-              wrapper: '/etc/mesos-chef/mesos-slave',
-              env: node['mesos']['slave']['env'])
-  end
-end
-
 # Disable services by default
-service 'mesos-master-default' do
-  service_name 'mesos-master'
-  case node['mesos']['init']
-  when 'systemd'
-    provider Chef::Provider::Service::Systemd
-  when 'sysvinit_debian'
-    provider Chef::Provider::Service::Init::Debian
-  when 'upstart'
-    provider Chef::Provider::Service::Upstart
+%w(slave master).each do |type|
+  service "mesos-#{type}-default" do
+    service_name "mesos-#{type}"
+    action %i[stop disable]
+    not_if { node['recipes'].include?("mesos::#{type}") }
   end
-  action %i[stop disable]
-  not_if { node['recipes'].include?('mesos::master') }
-end
-
-service 'mesos-slave-default' do
-  service_name 'mesos-slave'
-  case node['mesos']['init']
-  when 'systemd'
-    provider Chef::Provider::Service::Systemd
-  when 'sysvinit_debian'
-    provider Chef::Provider::Service::Init::Debian
-  when 'upstart'
-    provider Chef::Provider::Service::Upstart
-  end
-  action %i[stop disable]
-  not_if { node['recipes'].include?('mesos::slave') }
 end
