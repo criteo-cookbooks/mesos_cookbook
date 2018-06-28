@@ -14,7 +14,7 @@ issues_url       'https://github.com/mdsol/mesos_cookbook/issues'
   supports os
 end
 
-%w[java apt yum].each do |cookbook|
+%w[java apt yum systemd].each do |cookbook|
   depends cookbook
 end
 chef_version '>= 11' if respond_to?(:chef_version)

@@ -74,50 +74,36 @@ end
 
 directory '/etc/mesos-chef'
 
-# Init templates
-template 'mesos-master-init' do
-  case node['mesos']['init']
-  when 'systemd'
-    path '/etc/systemd/system/mesos-master.service'
-    source 'systemd.erb'
-  when 'sysvinit_debian'
-    mode 0o755
-    path '/etc/init.d/mesos-master'
-    source 'sysvinit_debian.erb'
-  when 'upstart'
-    path '/etc/init/mesos-master.conf'
-    source 'upstart.erb'
+unless node['mesos']['init'] == 'systemd'
+  template 'mesos-master-init' do
+    case node['mesos']['init']
+    when 'sysvinit_debian'
+      mode 0o755
+      path '/etc/init.d/mesos-master'
+      source 'sysvinit_debian.erb'
+    when 'upstart'
+      path '/etc/init/mesos-master.conf'
+      source 'upstart.erb'
+    end
+    variables(name:    'mesos-master',
+              wrapper: '/etc/mesos-chef/mesos-master',
+              env: node['mesos']['master']['env'])
   end
-  variables(name:    'mesos-master',
-            wrapper: '/etc/mesos-chef/mesos-master',
-            env: node['mesos']['master']['env'])
-end
 
-template 'mesos-slave-init' do
-  case node['mesos']['init']
-  when 'systemd'
-    path '/etc/systemd/system/mesos-slave.service'
-    source 'systemd.erb'
-  when 'sysvinit_debian'
-    mode 0o755
-    path '/etc/init.d/mesos-slave'
-    source 'sysvinit_debian.erb'
-  when 'upstart'
-    path '/etc/init/mesos-slave.conf'
-    source 'upstart.erb'
+  template 'mesos-slave-init' do
+    case node['mesos']['init']
+    when 'sysvinit_debian'
+      mode 0o755
+      path '/etc/init.d/mesos-slave'
+      source 'sysvinit_debian.erb'
+    when 'upstart'
+      path '/etc/init/mesos-slave.conf'
+      source 'upstart.erb'
+    end
+    variables(name:    'mesos-slave',
+              wrapper: '/etc/mesos-chef/mesos-slave',
+              env: node['mesos']['slave']['env'])
   end
-  variables(name:    'mesos-slave',
-            wrapper: '/etc/mesos-chef/mesos-slave',
-            env: node['mesos']['slave']['env'])
-end
-
-# Reload systemd on template change
-execute 'systemctl-daemon-reload' do
-  command '/bin/systemctl --system daemon-reload'
-  subscribes :run, 'template[mesos-master-init]'
-  subscribes :run, 'template[mesos-slave-init]'
-  action :nothing
-  only_if { node['mesos']['init'] == 'systemd' }
 end
 
 # Disable services by default
