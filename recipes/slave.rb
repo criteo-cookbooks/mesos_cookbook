@@ -79,5 +79,6 @@ service 'mesos-slave' do
   supports status: true, restart: true
   subscribes :restart, 'template[mesos-slave-init]'
   subscribes :restart, 'template[mesos-slave-wrapper]'
+  subscribes :restart, 'execute[systemctl-daemon-reload]', :immediately
   action %i[enable start]
 end
