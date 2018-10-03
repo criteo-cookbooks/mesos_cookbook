@@ -64,20 +64,33 @@ template 'mesos-master-wrapper' do
   variables(bin:    node['mesos']['master']['bin'],
             flags:  node['mesos']['master']['flags'],
             syslog: node['mesos']['master']['syslog'])
+  notifies :restart, 'service[mesos-master]'
+end
+
+systemd_service 'mesos-master' do
+  unit do
+    description 'Mesos mesos-master'
+    after 'network.target'
+    wants 'network.target'
+  end
+
+  service do
+    environment ['mesos']['master']['env']
+    exec_start '/etc/mesos-chef/mesos-master'
+    restart 'on-failure'
+    restart_sec 20
+    limit_nofile 16384
+  end
+
+  install do
+    wanted_by 'multi-user.target'
+  end
+  action [:create, :enable]
+  notifies :restart, 'service[mesos-master]'
 end
 
 # Mesos master service definition
 service 'mesos-master' do
-  case node['mesos']['init']
-  when 'systemd'
-    provider Chef::Provider::Service::Systemd
-  when 'sysvinit_debian'
-    provider Chef::Provider::Service::Init::Debian
-  when 'upstart'
-    provider Chef::Provider::Service::Upstart
-  end
   supports status: true, restart: true
-  subscribes :restart, 'template[mesos-master-init]'
-  subscribes :restart, 'template[mesos-master-wrapper]'
   action %i[enable start]
 end
