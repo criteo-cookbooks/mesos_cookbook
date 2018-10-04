@@ -1,8 +1,9 @@
 Mesos Cookbook
 ==============
-[![Cookbook](http://img.shields.io/cookbook/v/mesos.svg)](https://supermarket.chef.io/cookbooks/mesos)
-[![Build Status](https://secure.travis-ci.org/mdsol/mesos_cookbook.png?branch=master)](http://travis-ci.org/mdsol/mesos_cookbook)
-[![Gitter chat](https://img.shields.io/badge/Gitter-mdsol%2Fmesos_cookbook-brightgreen.svg)](https://gitter.im/mdsol/mesos_cookbook)
+
+** Note ** : we are maintaining this cookbook for Criteo usage based on the work from mdsol and other maintainers.
+Since the upstream cookbook is no longer active/maintained, we'll keep this cookbook updated.
+It might be tailored to our usage (only support centos 7+ for instance) but should be usable by anyone with a similar configuration.
 
 Application cookbook for installing the [Apache Mesos][] cluster manager.
 Mesos provides efficient resource isolation and sharing across distributed
@@ -18,7 +19,6 @@ Platform
 --------
 Tested on
 
-* Debian 8.6 (with Java 7)
 * CentOS 7.2
 
 Supported Mesos versions
@@ -26,11 +26,10 @@ Supported Mesos versions
 
 This cookbook is tested against the following Apache Mesos versions:
 
+* 1.4.0
 * 1.1.0
-* 1.0.1
-* 1.0.0
 
-We intend to support at most the three latest versions of Apache Mesos.
+We intend to support at most the mesos version used in Criteo and the latest official release.
 
 Attributes
 ----------
@@ -87,14 +86,10 @@ Dependencies
 
 The following cookbooks are dependencies:
 
-* [apt][]
 * [yum][]
 * [java][]
 * [systemd][]
 
-The following cookbooks are suggested:
-
-* [exhibitor][] (used for discovering ZooKeeper ensembles via [Netflix Exhibitor][])
 
 Usage
 -----
@@ -162,10 +157,8 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 
 [Apache Mesos]: http://mesos.apache.org
-[Netflix Exhibitor]: https://github.com/Netflix/exhibitor
 [Mesosphere]: http://mesosphere.io
 [Medidata Solutions]: http://www.mdsol.com
 [exhibitor]: https://github.com/SimpleFinance/chef-exhibitor
-[apt]: https://github.com/opscode-cookbooks/apt
 [yum]: https://github.com/chef-cookbooks/yum
 [java]: https://github.com/agileorbit-cookbooks/java

@@ -9,7 +9,7 @@ default['mesos']['repo']       = true
 # Mesosphere Mesos version.
 # overriding this attribute to nil in a wrapper cookbook will force the
 # cookbook to use the latest version available in the repositories
-default['mesos']['version']    = '1.1.0'
+default['mesos']['version']    = '1.7.0'
 
 default['mesos']['package_options'] = case node['platform_family']
                                       when 'debian'

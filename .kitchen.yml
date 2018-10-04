@@ -9,30 +9,12 @@ provisioner:
   require_chef_omnibus: 12.14.60
 
 platforms:
-  - name: ubuntu-16.04
-    run_list: ['recipe[apt]', 'recipe[curl]']
-  - name: ubuntu-15.10
-    run_list: ['recipe[apt]', 'recipe[curl]']
-  - name: ubuntu-14.04
-    run_list: ['recipe[apt]', 'recipe[curl]']
-  - name: ubuntu-12.04
-    run_list: ['recipe[apt]', 'recipe[curl]']
-  - name: debian-8.6
-    run_list: ['recipe[apt]']
-    attributes: {java: {jdk_version: '7'}}
   - name: centos-7.2
     run_list: ['recipe[yum]']
-  - name: centos-6.8
-    run_list: ['recipe[yum]']
-# Oracle Linux
-# - name: box-cutter/ol68
-#   run_list: ['recipe[yum]']
-# - name: box-cutter/ol72
-#   run_list: ['recipe[yum]']
 
 suites:
   - &default
-    name: 1-1-0
+    name: 1-4-0
     run_list:
       - recipe[mesos::master]
       - recipe[mesos::slave]
@@ -42,8 +24,5 @@ suites:
           flags:
             attributes: 'attribute01:value01;attribute02:value02'
   - <<: *default
-    name: 1-0-1
-    attributes: {mesos: {version: '1.0.1'}}
-  - <<: *default
-    name: 1-0-0
-    attributes: {mesos: {version: '1.0.0'}}
+    name: 1-7-0
+    attributes: {mesos: {version: '1.7.0'}}

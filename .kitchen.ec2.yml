@@ -29,46 +29,6 @@ provisioner:
   require_chef_omnibus: 12.5.1
 
 platforms:
-  - name: amazon-2016.09.0
-    run_list:
-      - recipe[yum]
-    driver:
-      image_id: ami-b04e92d0
-    transport:
-      username: ec2-user
-  # https://cloud-images.ubuntu.com/locator/ec2/
-  - name: ubuntu-16.04
-    run_list:
-      - recipe[apt]
-      - recipe[curl]
-    driver:
-      image_id: ami-a9d276c9
-  - name: ubuntu-15.10
-    run_list:
-      - recipe[apt]
-      - recipe[curl]
-    driver:
-      image_id: ami-1863a178
-  - name: ubuntu-14.04
-    run_list:
-      - recipe[apt]
-      - recipe[curl]
-    driver:
-      image_id: ami-01f05461
-  - name: ubuntu-12.04
-    run_list:
-      - recipe[apt]
-      - recipe[curl]
-    driver:
-      image_id: ami-adcd69cd
-  # https://wiki.debian.org/Cloud/AmazonEC2Image
-  - name: debian-8.6
-    run_list:
-      - recipe[apt]
-      - recipe[curl]
-    driver:
-      image_id: ami-4e1cc32e
-  # https://wiki.centos.org/Cloud/AWS
   - name: centos-7
     run_list:
       - recipe[yum]
@@ -77,18 +37,10 @@ platforms:
       block_device_mappings:
         - device_name: /dev/sda1
           ebs: {volume_type: gp2, delete_on_termination: true}
-  - name: centos-6
-    run_list:
-      - recipe[yum]
-    driver:
-      image_id: ami-05cf2265
-      block_device_mappings:
-        - device_name: /dev/sda1
-          ebs: {volume_type: gp2, delete_on_termination: true}
 
 suites:
   - &default
-    name: 1-1-0
+    name: 1-4-0
     run_list:
       - recipe[mesos::master]
       - recipe[mesos::slave]
@@ -98,12 +50,7 @@ suites:
           flags:
             attributes: 'attribute01:value01;attribute02:value02'
   - <<: *default
-    name: 1-0-1
+    name: 1-7-0
     attributes:
       mesos:
-        version: 1.0.1
-  - <<: *default
-    name: 1-0-0
-    attributes:
-      mesos:
-        version: 1.0.0
+        version: 1.7.0

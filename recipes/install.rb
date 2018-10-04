@@ -24,24 +24,6 @@ include_recipe 'java'
 include_recipe 'mesos::repo' if node['mesos']['repo']
 
 case node['platform_family']
-when 'debian'
-  %w[unzip default-jre-headless libcurl3 libsvn1].each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-
-  package 'mesos' do
-    # --no-install-recommends to skip installing zk. unnecessary.
-    options node['mesos']['package_options'].join(' ')
-    if node['mesos']['version']
-      action :install
-      # Glob is necessary to select the deb version string
-      version "#{node['mesos']['version']}*"
-    else
-      action :upgrade
-    end
-  end
 when 'rhel'
   %w[unzip libcurl subversion].each do |pkg|
     yum_package pkg do

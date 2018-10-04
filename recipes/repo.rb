@@ -20,16 +20,6 @@
 #
 
 case node['platform_family']
-when 'debian'
-  include_recipe 'apt'
-
-  apt_repository 'mesosphere' do
-    uri "http://repos.mesosphere.io/#{node['platform']}"
-    distribution node['lsb']['codename']
-    keyserver 'hkp://keyserver.ubuntu.com:80'
-    key 'E56151BF'
-    components ['main']
-  end
 when 'rhel'
   include_recipe 'yum'
 
