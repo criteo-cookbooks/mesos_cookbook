@@ -75,7 +75,7 @@ systemd_service 'mesos-master' do
   end
 
   service do
-    environment ['mesos']['master']['env']
+    environment node['mesos']['master']['env']
     exec_start '/etc/mesos-chef/mesos-master'
     restart 'on-failure'
     restart_sec 20
