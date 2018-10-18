@@ -76,7 +76,7 @@ systemd_service 'mesos-slave' do
   end
 
   service do
-    environment ['mesos']['slave']['env']
+    environment node['mesos']['slave']['env']
     exec_start '/etc/mesos-chef/mesos-slave'
     restart 'on-failure'
     restart_sec 20
