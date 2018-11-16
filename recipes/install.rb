@@ -45,7 +45,7 @@ end
 directory '/etc/mesos-chef'
 
 # Disable services by default
-%w(slave master).each do |type|
+%w[slave master].each do |type|
   service "mesos-#{type}-default" do
     service_name "mesos-#{type}"
     action %i[stop disable]
