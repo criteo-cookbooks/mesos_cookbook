@@ -67,6 +67,15 @@ template 'mesos-master-wrapper' do
   notifies :restart, 'service[mesos-master]'
 end
 
+file '/etc/mesos-chef/mesos-master-environment' do
+  owner 'root'
+  group 'root'
+  mode '0750'
+  content node['mesos']['master']['env'].sort.map { |k, v| %(#{k}="#{v}") }.join("\n")
+  notifies :restart, 'service[mesos-master]'
+end
+
+
 systemd_service 'mesos-master' do
   unit do
     description 'Mesos mesos-master'
@@ -75,7 +84,7 @@ systemd_service 'mesos-master' do
   end
 
   service do
-    environment node['mesos']['master']['env']
+    environment_file '/etc/mesos-chef/mesos-master-environment'
     exec_start '/etc/mesos-chef/mesos-master'
     restart 'on-failure'
     restart_sec 20

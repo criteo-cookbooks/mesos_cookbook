@@ -67,6 +67,13 @@ template 'mesos-slave-wrapper' do
   notifies :restart, 'service[mesos-slave]'
 end
 
+file '/etc/mesos-chef/mesos-slave-environment' do
+  owner 'root'
+  group 'root'
+  mode '0750'
+  content node['mesos']['slave']['env'].sort.map { |k, v| %(#{k}="#{v}") }.join("\n")
+  notifies :restart, 'service[mesos-slave]'
+end
 
 systemd_service 'mesos-slave' do
   unit do
@@ -76,7 +83,7 @@ systemd_service 'mesos-slave' do
   end
 
   service do
-    environment node['mesos']['slave']['env']
+    environment_file '/etc/mesos-chef/mesos-slave-environment'
     exec_start '/etc/mesos-chef/mesos-slave'
     restart 'on-failure'
     restart_sec 20
