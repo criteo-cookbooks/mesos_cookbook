@@ -36,9 +36,7 @@ ruby_block 'mesos-master-configuration-validation' do
     options = help.stdout.strip.scan(/^  --(?:\[no-\])?(\w+)/).flatten - ['help']
     # Check flags are in the list
     node['mesos']['master']['flags'].keys.each do |flag|
-      unless options.include?(flag)
-        Chef::Application.fatal!("Invalid Mesos configuration option: #{flag}. Aborting!", 1000)
-      end
+      Chef::Application.fatal!("Invalid Mesos configuration option: #{flag}. Aborting!", 1000) unless options.include?(flag)
     end
   end
 end
@@ -47,9 +45,7 @@ end
 if node['mesos']['zookeeper_exhibitor_discovery'] && node['mesos']['zookeeper_exhibitor_url']
   zk_nodes = MesosHelper.discover_zookeepers_with_retry(node['mesos']['zookeeper_exhibitor_url'])
 
-  if zk_nodes.nil?
-    Chef::Application.fatal!('Failed to discover zookeepers. Cannot continue.')
-  end
+  Chef::Application.fatal!('Failed to discover zookeepers. Cannot continue.') if zk_nodes.nil?
 
   node.override['mesos']['master']['flags']['zk'] = 'zk://' + zk_nodes['servers'].sort.map { |s| "#{s}:#{zk_nodes['port']}" }.join(',') + '/' + node['mesos']['zookeeper_path']
 end
@@ -61,8 +57,8 @@ template 'mesos-master-wrapper' do
   group 'root'
   mode '0750'
   source 'wrapper.erb'
-  variables(bin:    node['mesos']['master']['bin'],
-            flags:  node['mesos']['master']['flags'],
+  variables(bin: node['mesos']['master']['bin'],
+            flags: node['mesos']['master']['flags'],
             syslog: node['mesos']['master']['syslog'])
   notifies :restart, 'service[mesos-master]'
 end
@@ -74,7 +70,6 @@ file '/etc/mesos-chef/mesos-master-environment' do
   content node['mesos']['master']['env'].sort.map { |k, v| %(#{k}="#{v}") }.join("\n")
   notifies :restart, 'service[mesos-master]'
 end
-
 
 systemd_service 'mesos-master' do
   unit do
@@ -94,7 +89,7 @@ systemd_service 'mesos-master' do
   install do
     wanted_by 'multi-user.target'
   end
-  action [:create, :enable]
+  action %i[create enable]
   notifies :restart, 'service[mesos-master]'
 end
 

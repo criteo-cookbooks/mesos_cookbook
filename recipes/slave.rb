@@ -36,9 +36,7 @@ ruby_block 'mesos-slave-configuration-validation' do
     options = help.stdout.strip.scan(/^  --(?:\[no-\])?(\w+)/).flatten - ['help']
     # Check flags are in the list
     node['mesos']['slave']['flags'].keys.each do |flag|
-      unless options.include?(flag)
-        Chef::Application.fatal!("Invalid Mesos configuration option: #{flag}. Aborting!", 1000)
-      end
+      Chef::Application.fatal!("Invalid Mesos configuration option: #{flag}. Aborting!", 1000) unless options.include?(flag)
     end
   end
 end
@@ -61,8 +59,8 @@ template 'mesos-slave-wrapper' do
   group 'root'
   mode '0750'
   source 'wrapper.erb'
-  variables(bin:    node['mesos']['slave']['bin'],
-            flags:  node['mesos']['slave']['flags'],
+  variables(bin: node['mesos']['slave']['bin'],
+            flags: node['mesos']['slave']['flags'],
             syslog: node['mesos']['slave']['syslog'])
   notifies :restart, 'service[mesos-slave]'
 end
@@ -94,7 +92,7 @@ systemd_service 'mesos-slave' do
   install do
     wanted_by 'multi-user.target'
   end
-  action [:create, :enable]
+  action %i[create enable]
   notifies :restart, 'service[mesos-slave]'
 end
 

@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gem 'berkshelf'
 gem 'chefspec'
 gem 'foodcritic'
-gem 'rubocop'
+gem 'rubocop', '= 0.60.0'
 gem 'serverspec'
 
 gem 'chef', '= 12.14.60'
