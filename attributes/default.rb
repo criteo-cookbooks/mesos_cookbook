@@ -28,9 +28,6 @@ default['mesos']['master']['bin']                   = '/usr/sbin/mesos-master'
 # Environmental variables set before calling the mesos master process.
 default['mesos']['master']['env']['ULIMIT']         = '-n 16384'
 
-# Send stdout and stderr to syslog.
-default['mesos']['master']['syslog']                = true
-
 # Mesos master command line flags.
 # http://mesos.apache.org/documentation/latest/configuration/
 default['mesos']['master']['flags']['port']          = 5050
@@ -48,9 +45,6 @@ default['mesos']['slave']['bin']                    = '/usr/sbin/mesos-slave'
 
 # Environmental variables set before calling the mesos-slave process.
 default['mesos']['slave']['env']['ULIMIT']          = '-n 16384'
-
-# Send stdout and stderr to syslog.
-default['mesos']['slave']['syslog']                 = true
 
 # Mesos slave command line flags
 # http://mesos.apache.org/documentation/latest/configuration/
