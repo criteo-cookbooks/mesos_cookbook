@@ -58,8 +58,7 @@ template 'mesos-master-wrapper' do
   mode '0750'
   source 'wrapper.erb'
   variables(bin: node['mesos']['master']['bin'],
-            flags: node['mesos']['master']['flags'],
-            syslog: node['mesos']['master']['syslog'])
+            flags: node['mesos']['master']['flags'])
   notifies :restart, 'service[mesos-master]'
 end
 

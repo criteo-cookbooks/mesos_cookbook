@@ -60,8 +60,7 @@ template 'mesos-slave-wrapper' do
   mode '0750'
   source 'wrapper.erb'
   variables(bin: node['mesos']['slave']['bin'],
-            flags: node['mesos']['slave']['flags'],
-            syslog: node['mesos']['slave']['syslog'])
+            flags: node['mesos']['slave']['flags'])
   notifies :restart, 'service[mesos-slave]'
 end
 
