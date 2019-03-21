@@ -82,6 +82,7 @@ systemd_service 'mesos-slave' do
   service do
     environment_file '/etc/mesos-chef/mesos-slave-environment'
     exec_start '/etc/mesos-chef/mesos-slave'
+    kill_mode 'process'
     restart 'on-failure'
     restart_sec 20
     limit_nofile 16384
