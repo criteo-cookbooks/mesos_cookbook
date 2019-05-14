@@ -77,6 +77,8 @@ systemd_service 'mesos-slave' do
     description 'Mesos mesos-slave'
     after 'network.target'
     wants 'network.target'
+    # see https://jira.apache.org/jira/browse/MESOS-9772
+    requires 'systemd-journald.service'
   end
 
   service do
