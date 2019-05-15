@@ -25,24 +25,14 @@ end
 
 include_recipe 'mesos::install'
 
-def unknown_flags(node)
-  # Get Mesos --help
-  help = Mixlib::ShellOut.new("#{node['mesos']['master']['bin']} --help")
-  help.run_command
-  help.error!
-  # Extract options
-  options = help.stdout.strip.scan(/^  --(?:\[no-\])?(\w+)/).flatten - ['help']
-  node['mesos']['master']['flags'].keys.reject { |flag| options.include?(flag) }
-end
-
 # Mesos configuration validation
 ruby_block 'mesos-master-configuration-validation' do
   block do
-    unknown_flags.each do |flag|
+    unknown_flags('master', node).each do |flag|
       Chef::Application.fatal!("Invalid Mesos configuration option: #{flag}. Aborting!", 1000) unless options.include?(flag)
     end
   end
-  only_if { unknown_flags(node).any? }
+  only_if { unknown_flags('master', node).any? }
 end
 
 # ZooKeeper Exhibitor discovery

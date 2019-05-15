@@ -31,4 +31,17 @@ module MesosHelper
     retry unless (tries -= 1).zero?
   end
 end
-# rubocop:eable Style/ClassAndModuleChildren
+
+module MesosFlagHelper
+  def unknown_flags(agent_type, node)
+    # Get Mesos --help
+    help = Mixlib::ShellOut.new("#{node['mesos'][agent_type]['bin']} --help --work_dir=#{node['mesos'][agent_type]['flags']['work_dir']}")
+    help.run_command
+    help.error!
+    # Extract options
+    options = help.stdout.strip.scan(/^  --(?:\[no-\])?(\w+)/).flatten - ['help']
+    # Check flags are in the list
+    node['mesos'][agent_type]['flags'].keys.reject { |flag| options.include?(flag) }
+  end
+end
+Chef::Resource::RubyBlock.send(:include, MesosFlagHelper)
