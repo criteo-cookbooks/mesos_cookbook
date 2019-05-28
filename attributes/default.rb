@@ -25,6 +25,8 @@ default['mesos']['package_options'] = case node['platform_family']
 # Mesos master binary location.
 default['mesos']['master']['bin']                   = '/usr/sbin/mesos-master'
 
+default['mesos']['master']['user']                  = 'mesosmaster'
+
 # Environmental variables set before calling the mesos master process.
 default['mesos']['master']['env']['ULIMIT']         = '-n 16384'
 
