@@ -44,10 +44,14 @@ if node['mesos']['zookeeper_exhibitor_discovery'] && node['mesos']['zookeeper_ex
   node.override['mesos']['master']['flags']['zk'] = 'zk://' + zk_nodes['servers'].sort.map { |s| "#{s}:#{zk_nodes['port']}" }.join(',') + '/' + node['mesos']['zookeeper_path']
 end
 
+user node['mesos']['master']['user'] do
+  home '/etc/mesos-chef'
+end
+
 # Mesos master configuration wrapper
 template 'mesos-master-wrapper' do
   path '/etc/mesos-chef/mesos-master'
-  owner 'root'
+  owner node['mesos']['master']['user']
   group 'root'
   mode '0750'
   source 'wrapper.erb'
@@ -57,7 +61,7 @@ template 'mesos-master-wrapper' do
 end
 
 file '/etc/mesos-chef/mesos-master-environment' do
-  owner 'root'
+  owner node['mesos']['master']['user']
   group 'root'
   mode '0750'
   content node['mesos']['master']['env'].sort.map { |k, v| %(#{k}="#{v}") }.join("\n")
@@ -79,6 +83,7 @@ systemd_service 'mesos-master' do
     restart 'on-failure'
     restart_sec 20
     limit_nofile 16384
+    user node['mesos']['master']['user']
   end
 
   install do
