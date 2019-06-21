@@ -80,7 +80,7 @@ systemd_service 'mesos-slave' do
     exec_start '/etc/mesos-chef/mesos-slave'
     restart 'on-failure'
     restart_sec 20
-    limit_nofile 16384
+    limit_nofile 65536
     delegate true
   end
 

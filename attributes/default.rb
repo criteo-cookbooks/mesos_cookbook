@@ -28,7 +28,7 @@ default['mesos']['master']['bin']                   = '/usr/sbin/mesos-master'
 default['mesos']['master']['user']                  = 'mesosmaster'
 
 # Environmental variables set before calling the mesos master process.
-default['mesos']['master']['env']['ULIMIT']         = '-n 16384'
+default['mesos']['master']['env'] = {}
 
 # Mesos master command line flags.
 # http://mesos.apache.org/documentation/latest/configuration/
@@ -46,7 +46,7 @@ default['mesos']['master']['flags']['work_dir']      = '/tmp/mesos'
 default['mesos']['slave']['bin']                    = '/usr/sbin/mesos-slave'
 
 # Environmental variables set before calling the mesos-slave process.
-default['mesos']['slave']['env']['ULIMIT']          = '-n 16384'
+default['mesos']['slave']['env']                    = {}
 
 # Mesos slave command line flags
 # http://mesos.apache.org/documentation/latest/configuration/
