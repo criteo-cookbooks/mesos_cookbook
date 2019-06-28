@@ -48,6 +48,12 @@ user node['mesos']['master']['user'] do
   home '/etc/mesos-chef'
 end
 
+directory node['mesos']['master']['flags']['work_dir'] do
+  owner node['mesos']['master']['user']
+  mode '0755'
+  recursive true
+end
+
 # Mesos master configuration wrapper
 template 'mesos-master-wrapper' do
   path '/etc/mesos-chef/mesos-master'
