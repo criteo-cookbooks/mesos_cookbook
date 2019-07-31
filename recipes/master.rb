@@ -88,7 +88,7 @@ systemd_service 'mesos-master' do
     exec_start '/etc/mesos-chef/mesos-master'
     restart 'on-failure'
     restart_sec 20
-    limit_nofile 16384
+    limit_nofile node['mesos']['master']['limit_nofile']
     user node['mesos']['master']['user']
   end
 

@@ -26,6 +26,7 @@ default['mesos']['package_options'] = case node['platform_family']
 default['mesos']['master']['bin']                   = '/usr/sbin/mesos-master'
 
 default['mesos']['master']['user']                  = 'mesosmaster'
+default['mesos']['master']['limit_nofile'] = 16384
 
 # Environmental variables set before calling the mesos master process.
 default['mesos']['master']['env'] = {}
@@ -43,7 +44,9 @@ default['mesos']['master']['flags']['work_dir']      = '/tmp/mesos'
 #
 
 # Mesos slave binary location.
-default['mesos']['slave']['bin']                    = '/usr/sbin/mesos-slave'
+default['mesos']['slave']['bin'] = '/usr/sbin/mesos-slave'
+
+default['mesos']['slave']['limit_nofile'] = 65536
 
 # Environmental variables set before calling the mesos-slave process.
 default['mesos']['slave']['env']                    = {}
