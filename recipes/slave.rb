@@ -93,5 +93,5 @@ end
 
 service 'mesos-slave' do
   supports status: true, restart: true
-  action %i[enable start]
+  action %i[enable]
 end
