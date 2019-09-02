@@ -102,5 +102,5 @@ end
 # Mesos master service definition
 service 'mesos-master' do
   supports status: true, restart: true
-  action %i[enable start]
+  action %i[enable]
 end
