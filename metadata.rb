@@ -16,5 +16,5 @@ supports 'centos'
   depends cookbook
 end
 
-depends 'systemd', '<= 3.2.2'
-chef_version '>= 11' if respond_to?(:chef_version)
+depends 'systemd'
+chef_version '>= 14' if respond_to?(:chef_version)

@@ -26,7 +26,7 @@ busser:
 
 provisioner:
   name: chef_zero
-  require_chef_omnibus: 12.5.1
+  require_chef_omnibus: 14.7.17
 
 platforms:
   - name: centos-7
