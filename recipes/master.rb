@@ -29,7 +29,7 @@ include_recipe 'mesos::install'
 ruby_block 'mesos-master-configuration-validation' do
   block do
     unknown_flags('master', node).each do |flag|
-      Chef::Application.fatal!("Invalid Mesos configuration option: #{flag}. Aborting!", 1000) unless options.include?(flag)
+      Chef::Application.fatal!("Invalid Mesos configuration option: #{flag}. Aborting!", 1000)
     end
   end
   only_if { unknown_flags('master', node).any? }
