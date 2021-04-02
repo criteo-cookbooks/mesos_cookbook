@@ -45,6 +45,7 @@ default['mesos']['master']['flags']['work_dir']      = '/tmp/mesos'
 
 # Mesos slave binary location.
 default['mesos']['slave']['bin'] = '/usr/sbin/mesos-slave'
+default['mesos']['slave']['systemd_exec_start'] = '/etc/mesos-chef/mesos-slave'
 
 default['mesos']['slave']['limit_nofile'] = 65536
 
