@@ -26,12 +26,12 @@ include_recipe 'mesos::repo' if node['mesos']['repo']
 case node['platform_family']
 when 'rhel'
   %w[unzip libcurl subversion].each do |pkg|
-    yum_package pkg do
+    package pkg do
       action :install
     end
   end
 
-  yum_package 'mesos' do
+  package 'mesos' do
     if node['mesos']['version']
       version node['mesos']['version']
     else
